@@ -1,0 +1,11 @@
+
+body {
+    font-family: system-ui;
+    background:lightgrey;
+    text-align: center;
+  }
+  h1 {color: green;} /*unable to change font colour*/
+  p {color: blue}
+  button {background-color: red;
+  font-weight: bold;}
+  
