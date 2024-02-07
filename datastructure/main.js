@@ -1,219 +1,376 @@
-/*
-data.addEventListener("change",update_ops_options); //event listener to update ops
 
+let ds = null // new.
 
-const update_ops_options = () => { // to be deleted
-    const selected_item = data.value;
-    const options = ops.options;
-
-    while (options.length > 0){
-        options[0].remove(); // remove all options from ops
-    }
-
-    if (selected_item === "Array"){
-        add_option("permutation_sort", "permutation sort");
-        add_option("selection_sort", "selection sort");
-        add_option("insertion_sort", "insertion sort");
-        add_option("merge_sort", "merge sort");
-        add_option("tuple_sort", "tuple sort");
-        add_option("counting_sort", "counting sort");
-        add_option("radix_sort", "radix sort");
+// ****** SHOW INSERT IDX INPUT ****** //
+const insert_idx_show = () => {
+    for (i=0;i<ds.total_ops+1;i++){
+        let operation_indiv_div = document.getElementById("operation_indiv_div"+i);
+        let value = operation_indiv_div.querySelector("#ops").value;
+        let idx_display = operation_indiv_div.querySelector("#idx_input");
+        if (value === "insert"){idx_display.style.display = "inline-block";}
+        else {idx_display.style.display = "none";}
     }
 }
-*/
+document.getElementById("operation_div").addEventListener("change", insert_idx_show);
+// ****** SHOW INSERT IDX INPUT ****** //
 
-// add enter to submit the inputs
-// explain part colour codes
 
-const restart_board = () => { // clear the webpage 
+// ****** RESTARTING ENTIRE PAGE ****** //
+const restart_all = () => {
+    restart_operation();
+    // restart_board();
+    // remove_input();
+    // ds = null;
+    // document.getElementById("simulate_ops_button").style.display = "inline-block";
+    // document.getElementById("restart_ops_button").style.display = "none";
+    // to delete, part of restart_opetation function
+    
+    input_list.value=""
+    document.getElementById("operation_div").style.display = "none";
+    document.getElementById("show").style.display = "inline-block";
+    document.getElementById("restart_ds").style.display = "none";
+}
+
+const restart_operation = () => {
+    restart_board();
+    remove_input();
+    hide_explain();
+    // start_data(); put in html, repeat function in restart_all
+    // need to remove add  operations
+    document.getElementById("simulate_ops_button").style.display = "inline-block";
+    document.getElementById("next_button").style.display = "none";
+    document.getElementById("previous_button").style.display = "none";
+    document.getElementById("restart_ops_button").style.display = "none";
+    document.getElementById("target_value").style.display = "none";
+    document.getElementById("ani_value").style.display = "none";
+    document.getElementById("add_operation_button").style.display = "inline-block";
+    
+    const parent_div = document.getElementById("add_operation"); // remove all added operation
+    while (ds.total_ops>0){
+        child_div = parent_div.querySelector("#operation_indiv_div"+ds.total_ops);
+        parent_div.removeChild(child_div);
+        ds.total_ops--;
+    }
+    ds = null;
+}
+
+const restart_board = () => { // clear the webpage in animations
     const parent_div = document.getElementById("data_parent");
     while (parent_div.firstChild) {
         parent_div.removeChild(parent_div.firstChild);
     }
     document.getElementById("target_num").textContent = ""; // remove inputs
+    document.getElementById("ani_number").textContent = ""; // remove inputs
 }
 
 const remove_input = () => {
     document.getElementById("ops_input").value = "";
-    document.getElementById("ops_input2").value = "";
-    document.getElementById("input_list").value = "";
+    document.getElementById("idx_input").value = "";
+    // remove input of add operation
 }
+// ****** RESTARTING ENTIRE PAGE ****** //
 
-const create_div = (id,i) => {
+
+// ****** CREATING DIVS ****** //
+const create_div = (ds,id,i) => {
     div = document.createElement("div");
+    div.classList.add("child_data_class"); // div class is data_child
     document.getElementById("data_parent").appendChild(div);
     div.id = id+"_"+i;
     div.textContent = id;
     div.style.left = (1+i)*100 + "px";
 }
+// ****** CREATING DIVS ****** //
 
-const update_input = () => {
-    restart_board();
-    let data = document.getElementById("data").value; // which data structure
+
+// ****** ADD OPERATIONS ****** //
+const add_operation = () => {
+    ds.total_ops++;
+    let ops = document.getElementById("operation_indiv_div0");
+    let new_operation_indiv_div = ops.cloneNode(true);
+    let add_operation = document.getElementById("add_operation");
+    add_operation.appendChild(new_operation_indiv_div); // adding new ops as child div
+    new_operation_indiv_div.id = "operation_indiv_div" + ds.total_ops;
+    add_operation.querySelector("#idx_input").style.display="none"; // bug that shows idx in add ops non insert
+}
+// ****** ADD OPERATIONS ****** //
+
+
+
+// ****** STARTING SIMULATION ****** //
+const start_data = () => {
+    let data = document.getElementById("data").value; // which Data structure
     let list = document.getElementById("input_list").value;
     const list_delimiter = list.split(",").map(s => Number(s));
-    
-    let ds = new sorted_array(list_delimiter) // more efficient way of doing 
-    ds.build(); // change to when windows start
-    return ds
-}
-
-const start_data = () => {
-    let ops = document.getElementById("ops").value;
-    let input = document.getElementById("ops_input").value; // target number
-    let idx = document.getElementById("ops_input2").value;
-    
-    ds = update_input();
-    if (ops === "find"){ds.find(input);ds.find_animate();} // change to oop
-    else if (ops === "find_min"){ds.find_min(input);ds.find_animate();}
-    else if (ops === "find_max"){ds.find_max(input);ds.find_animate();}
-    else if (ops === "delete"){ds.delete(input);}
-    else if (ops === "insert"){ds.insert(input,idx);}
-}
-
-function sorted_array(L) {
-    this.L = L;
-    this.ani_list = [];
-    this.number = false; // target number
-    this.idx = false; // target index
-    this.explain = false;
-    this.animate_stage = 0;
-}
-
-sorted_array.prototype.build = function () {
-    this.L = this.L.sort(function(a,b){return a-b;});
-    for (let i=0; i<this.L.length; i++){
-      create_div(this.L[i],i)
+    ds = new sorted_array(list_delimiter);
+  
+    for (let i=0; i<ds.L.length; i++){
+      create_div(ds,ds.L[i],i) // show the unordered list
     }
+    document.getElementById("operation_div").style.display = "block";
+    document.getElementById("show").style.display = "none";
+    document.getElementById("restart_ds").style.display = "inline-block";
 }
 
-sorted_array.prototype.find_animate = function () {
-    let animate_stage = this.animate_stage;
-    let ani_list = this.ani_list;
-    txt = ani_list[animate_stage][1];
-    document.getElementById("target_num").textContent = txt;
-    let id = String(ani_list[animate_stage][0] + "_" + (animate_stage));
-    let div = document.getElementById(id);
-    if (ani_list[animate_stage][0]===txt){div.style.outline = "3px solid gold"} // if equal to target value
-    else {div.style.outline = "3px solid blue"}
+
+const start_operation = (ds) => {
+    // showing and hiding buttons
+    document.getElementById("simulate_ops_button").style.display = "none"; // show and hide buttons
+    document.getElementById("add_operation_button").style.display = "none";
+    document.getElementById("next_button").style.display = "inline-block";
+    document.getElementById("previous_button").style.display = "inline-block";
+    document.getElementById("restart_ops_button").style.display = "inline-block";
+    document.getElementById("target_value").style.display = "inline-block";
+    document.getElementById("ani_value").style.display = "inline-block";
+    
+    // building data structure
+    let data_structure = document.getElementById("data").value; // type of data structure
+    if (data_structure === "sorted_array"){build_ds_sorted_arr(ds);}
+    else if (data_structure === "linked_list"){build_ds_linked_list(ds);}
+    else if (data_structure === "hash_table"){build_ds_hash_table(ds);}// add more data structures here
+    ds.data_structure = data_structure;
+
+    for (let i=0; i<ds.total_ops+1; i++){
+        console.log(i,ds.total_ops+1)
+        ds.current_ops++
+        execute_operation(i);
+        ds.special = Array(ds.L.legnth).fill(0); // initialise ds.special
+        console.log(ds.ani_list)
+    }
+    animate(ds);
 }
 
-sorted_array.prototype.next_step = function (){
-    this.animate_stage++;
-    console.log(this.animate_stage, this.ani_list.length);
-    if (this.animate_stage >= this.ani_list.length){
-        let answer = window.confirm("No more next step. \n\n restart?")
-        if (answer){
-            restart_board();
-            remove_input();
+const execute_operation = (i) => {
+    let total_ops_name = "operation_indiv_div"+i;
+    let total_ops = document.getElementById(total_ops_name);
+    let ops = total_ops.querySelector("#ops").value;
+    let input = Number(total_ops.querySelector("#ops_input").value); // target number
+    let insert_idx = total_ops.querySelector("#idx_input").value; // index for insert
+    if (ops === "find_linear"){find_x_linear(ds,input);} 
+    else if (ops === "find_binary"){find_x_binary(ds,input);}
+    else if (ops === "find_min"){find_min(ds,input);}
+    else if (ops === "find_max"){find_max(ds,input);}
+    else if (ops === "delete"){delete_x(ds,input);}
+    else if (ops === "insert"){insert_x(ds,input,insert_idx);}
+    
+}
+
+const hide_explain = (ops) => {
+    let divs = document.querySelectorAll('[id$="_code"');
+    divs.forEach(function(div){div.style.display = "none";}) // hides all the div
+}
+// ****** STARTING SIMULATION ****** //
+
+
+// ****** ANIMATION ****** //
+const animate = (ds) => {
+    restart_board();
+    let animate_stage = ds.animate_stage;
+    let ani_list = ds.ani_list;
+    let arr = ani_list[animate_stage][0];
+    let pointer = ani_list[animate_stage][1];
+    let target = ani_list[animate_stage][2];
+    let special = ani_list[animate_stage][3];
+    let current_ops = ani_list[animate_stage][4];
+    document.getElementById("target_num").textContent = target; // html target value
+    document.getElementById("ani_number").textContent = (ds.animate_stage+1) + '/' + ds.ani_list.length; // html animate value
+    console.log(pointer);
+    for (let i=0; i<arr.length; i++){ //same as build_ds, create DIVS
+        create_div(ds,arr[i],i);
+        if (special[i]==1){
+            let id_special = arr[i]+"_"+[i];
+            div_special = document.getElementById(id_special);
+            div.style.background = "grey";
         }
-    else{this.animate_stage--;} // return to same animate_stage
     }
-    else{this.find_animate();}
+    
+    for (a=0;a<ds.total_ops+1;a++){
+        now_ops = document.getElementById("operation_indiv_div"+a).querySelector("#ops");
+        if(current_ops === -1){ // for build function
+            document.getElementById("build_button").style.background="lightgreen";
+            document.getElementById("build_code").style.display = "block";
+        }
+        else{
+            document.getElementById("build_button").style.background="white";
+            if (a === current_ops){
+                now_ops.style.background = "lightgreen";
+                console.log(now_ops.value);
+                hide_explain();
+                document.getElementById(now_ops.value+"_code").style.display = "block"; // show only that div 
+            }
+            else {now_ops.style.background = "white";}    
+        }
+    }
+
+
+    if (isNaN(pointer) || isNaN(target)){console.log("stopped animation");return;} // before sort to sort, no pointers
+    else{ // where pointer is 
+        let id = arr[pointer] + "_" + pointer;
+        div = document.getElementById(id);
+        div.style.background = "lightblue";
+    }
+    if (arr[pointer]===target){ // highlight gold if elem found
+        div.style.borderColor = "gold";
+        div.style.height = "70px";
+        div.style.width = "70px";
+        div.style.fontSize = '200%';
+    }
+}
+
+const next_step = (ds) => {
+    ds.animate_stage++;
+    if (ds.animate_stage >= ds.ani_list.length){
+        ds.animate_stage--;
+        //let answer = window.confirm("No more next step. \n\n restart?")
+        //if (answer){restart_operation();}
+    //else{ds.animate_stage--;} // return to same animate_stage
+    }
+    else{animate(ds);}
 }
   
-sorted_array.prototype.previous_step = function (){
-    console.log(this.animate_stage, this.ani_list.length);
-    if (this.animate_stage < 0){
-        let answer = window.confirm("No more previous step. \n\n restart?");
-    if (answer){
-        restart_board();
-        remove_input();
-        }
-    else{this.animate_stage++;} // return to same animate_stage
+const previous_step = (ds) => {
+    if (ds.animate_stage < 0){
+        ds.animate_stage++;
+        //let answer = window.confirm("No more previous step. \n\n restart?");
+        //if (answer){restart_operation();}
+    //else{ds.animate_stage++;} // return to same animate_stage
     }
+    else{ds.animate_stage--;animate(ds);}
+}
+// ****** ANIMATION ****** //
 
-    else{
-        let id = String(this.ani_list[this.animate_stage][0] + "_" + (this.animate_stage));
-        let div = document.getElementById(id);
-        div.style.outline = "3px solid grey";
-        this.animate_stage--;
-        }
+
+// ****** METHODS/FUNCTIONS ****** //
+const build_ds_sorted_arr = (ds) => {
+    ds.ani_list.push([structuredClone(ds.L),NaN,NaN,NaN,ds.current_ops]); // ordered list
+    ds.L = ds.L.sort(function(a,b){return a-b;}); 
+    ds.ani_list.push([structuredClone(ds.L),NaN,NaN,NaN,ds.current_ops]); // ordered list
 }
 
-sorted_array.prototype.find = function(x) {
-    const input = Number(x)
-    this.number = input
-    for (let i=0; i<this.L.length; i++){
-        id = this.L[i];      
+const build_ds_linked_list = (ds) => {
+    // put building linked list algo here
+//    ds.ani_list.push([ds.L,NaN,NaN,NaN]); // ordered list
+//    for (let i=0; i<ds.L.length; i++){
+//      create_div(ds,ds.L[i],i)
+//    }
+}
+
+const build_ds_hash_table = (ds) => {
+    // put building hash table algo here
+//    ds.ani_list.push([ds.L,NaN,NaN,NaN]); // ordered list
+//    for (let i=0; i<ds.L.length; i++){
+//      create_div(ds,ds.L[i],i)
+//    }
+}
+
+
+const find_x_linear = (ds,x) => {
+    const input = Number(x);
+    ds.number = input;
+    
+    for (let i=0; i<ds.L.length; i++){
+        let not_array = structuredClone(ds.special)
+        id = ds.L[i];
+        ds.ani_list.push([structuredClone(ds.L),i,input,not_array,ds.current_ops]); // [array,pointer,target,special]
+        if (id === input){break;}
+        else{ds.special[i]=1;}
+    }
+}
+
+const find_x_binary = (ds,x) =>{
+    const input = x;
+    let end = ds.L.length - 1;  
+    let start = 0;
+    
+    while (start<=end){
+        let not_array = structuredClone(ds.special);
+        let pointer = Math.floor((start + end)/2);
+        ds.ani_list.push([structuredClone(ds.L),pointer,input,not_array,ds.current_ops]);// insert into animation
       
-        this.ani_list.push([id,input]);
-        if (id === input){
-            // this.ani_list.push([String(id),input]); dont need this to end 
-            break;
-        }
+        if (ds.L[pointer] > input) { // left hand side
+            for (i=pointer;i<end+1;i++){ds.special[i]=1}
+            not_array = structuredClone(ds.special);
+            ds.ani_list.push([structuredClone(ds.L),NaN,input,not_array,ds.current_ops]);
+            end = pointer - 1;    
+        }   
+        else if (ds.L[pointer] < input){ // right hand side
+            for (i=start;i<pointer+1;i++){ds.special[i]=1};
+            not_array = structuredClone(ds.special);
+            ds.ani_list.push([structuredClone(ds.L),NaN,input,not_array,ds.current_ops]);
+            start = pointer + 1;
+        } 
+        else if (ds.L[pointer] === input) {return;}
     }
+    console.log(ds.ani_list)
 }
 
-sorted_array.prototype.find_min = function(){
-    let min = this.L[0];
-    for (i=0; i<this.L.length; i++){
-        id = this.L[i];   
-        this.ani_list.push([id,min]);
-    }
+const find_min = (ds) => {
+    let min = ds.L[0];
+    find_x_linear(ds,min);
 }
 
-sorted_array.prototype.find_max = function(){
-    let max = this.L[this.L.length-1];
-    for (i=0; i<this.L.length; i++){
-        id = this.L[i];     
-        this.ani_list.push([id,max]);
-    }
+const find_max = (ds) => {
+    let max = ds.L[ds.L.length-1];
+    find_x_linear(ds,max);
 }
 
-sorted_array.prototype.delete = function(x){
-    // find the item first
-    // delete div
+const delete_x = (ds,x) => { // find elem, then delete
     const input = Number(x)
-    this.number = input;
-  
-    if (this.L.includes(input)){
-        let id = input + "_" + this.L.indexOf(input);
-        document.getElementById(id).remove();
-        document.getElementById("target_num").textContent = input;
-        this.L.pop(input);
+    ds.number = input;
+    find_x_linear(ds,input);
+    if (ds.L.includes(input)){
+        let idx = ds.L.indexOf(input); // check ds.L does not have input GOT ISSUE HERE
+        let remove_ds_L = structuredClone(ds.L);
+        remove_ds_L.splice(idx,1," "); // replace 1 elem at idx to empty string
+        ds.L.splice(idx,1); // remove 1 elem at idx
+        ds.ani_list.push([remove_ds_L,NaN,input,NaN,ds.current_ops]); // show empty div for delete
+        ds.ani_list.push([structuredClone(ds.L),NaN,input,NaN,ds.current_ops]); // show the new ds list
     }
     else {
-        let answer = window.confirm("Value not found. \n\n restart?");
-        if (answer){
-          restart_board();
-          remove_input();
-        }
+        // window.alert("Value not found");
+        //if (answer){
+        //  restart_board();
+        //  remove_input();
+        //}
     }
 }
 
-sorted_array.prototype.insert = function(x,i){
+const insert_x = (ds,x,idx) => {
     const input = Number(x);
-    this.number = input;
-    const idx = Number(i);
-    this.idx = idx;
-    // see if possible to add the find method
-    this.L.splice(idx,0,input); // add new input into array
-    restart_board();
-    
-    for (let i=0; i<this.L.length; i++){
-      loop2(this.L[i],i);
-    }
-    function loop2(lst,idx){
-      setTimeout(function(){
-        create_div(lst,idx)
-      }, 1000*idx)
-    }
-    
-    document.getElementById(input+"_"+idx).style.outline = "3px Solid Red"; // how to delay this line until above code is run
+    ds.number = input;
+
+    for (let i=idx; i<ds.L.length; i++){ds.special[i] = 1;}
+    ds.ani_list.push([structuredClone(ds.L),NaN,input,structuredClone(ds.special),ds.current_ops]) // shade right list
+
+    let new_list = structuredClone(ds.L);
+    new_list.splice(idx,0,""); // empty div into array
+
+    ds.L.splice(idx,0,input); // final list in ds after insert
+    ds.special[idx] = 0; // shift grey background to right
+    ds.special.push(1);
+
+    ds.ani_list.push([new_list,NaN,input,structuredClone(ds.special),ds.current_ops]); // build left side with empty div
+    ds.ani_list.push([structuredClone(ds.L),idx,input,NaN,ds.current_ops]);
+    if (ds.data_structure == "sorted_array"){build_ds_sorted_arr(ds);}
 }
 
 
-const input = document.querySelector("input");
-input.addEventListener("input",update_input); // make sure input refers to first input, not operation input
+// ****** DATA STRUCTURES ****** //
+function sorted_array(L) {
+    this.L = L;
+    this.data_structure = "";
+    this.ani_list = []; // [list, pointer, target, special,current_ops]
+    this.ani_explain = [];
+    this.number = false; // target number
+    this.animate_stage = 0;
+    this.special = []; // background colour binary search
+    this.total_ops = 0;
+    this.current_ops = -1;
+}
 
 
-
-
-// chagne this.number to compare all the things required
+// change this.number to compare all the things required
 
 
 
 //data.addEventListener("change",start_data);
-
-
