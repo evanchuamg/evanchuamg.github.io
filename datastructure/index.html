@@ -1,138 +1,121 @@
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Data Structures</title>
-    <link rel="stylesheet" href="style.css"> 
-  </head>
-  <body>
-  <div class="container">
-    <div class="top">
-      <div class="ds">
-        <h1>Welcome to Simulation for Data Structures</h1>
-        <div class="data_class_div">
-          <h2>Select a Data Structure</h2>
-          <p></p>
-          <select name="Data" id="data" required>
-            <option value ="sorted_array">Sorted Array</option>
-            <option value ="linked_list">Linked List</option>
-            <option value ="hash_table">Hash Table</option>
-          </select>
-          <input name="input_list" id="input_list" required placeholder="comma-sperated numbers">
-          <button id="show" onclick=start_data()>Show</button>
-          <button id="restart_ds" style="display:none" onclick=restart_all()>Restart DS</button>
-        </div> <!--data_class_div-->
-
-        <div id="operation_div" class="operation_class_div" style="display:none;" >
-          <h2>Select an operation</h2>
-          <p></p>
-          <select name="build_button" id="build_button" required>
-              <option value ="build">build</option>
-            </select>
-              <p></p>
-          <div id="operation_indiv_div0">
-            <select name="ops" id="ops" required>
-              <option value ="find_binary">find (Binary)</option>
-              <option value ="find_linear">find (Linear)</option>
-              <option value ="insert">insert</option>
-              <option value ="delete">delete</option>
-              <option value ="find_min">find min</option>
-              <option value ="find_max">find max</option>
-              </select>
-              <input type="number" id = "ops_input" required placeholder="target number"> <!--ops input value-->
-              <input type="number" id = "idx_input" required placeholder="index number" style="display:none"> <!--insert value-->
-              <p></p>
-          </div>
-        
-          <div id="add_operation" style="display:block;">
-          </div> <!--add operation-->
-
-          <div id="operation_button">
-            <button id="add_operation_button" onclick=add_operation()>Add Operation</button>
-            <button id="next_button" style="display:none" onclick=next_step(ds)>Next Step</button>
-            <button id="previous_button" style="display:none" onclick=previous_step(ds)>Previous</button>
-            <button id="simulate_ops_button" onclick=start_operation(ds)>Simulate</button>
-            <button id="restart_ops_button" style="display:none" onclick=restart_operation();start_data();>Restart</button>   
-            <p></p>
-            <h4 id="target_value" style="display:none">Target value: </h4>
-            <div id="target_num" style="display:inline-block"></div>
-            <h4 id="ani_value" style="display:none">Animation stage: </h4>
-            <div id="ani_number" style="display:inline-block"></div>
-            
-          </div> <!-- operation button-->
-        </div> <!-- operation div-->
-        </div> <!-- ds div-->
-          <div id="data_parent" class="data_parent_class"></div> <!-- top left compare DS-->
-      </div> <!-- top div-->
-      
-      <div class="bottom">
-        <div id ="explain_div" class="explain_div">
-          <h2>Pseudocode</h2>
-          <div id ="build_code" style="display: none;"><pre>Build data structure</pre></div>
-          <div id ="find_binary_code" style="display: none;"><pre>            
-Binary Search
-set left limit
-set right limit
-              
-while left limit &lt; right limit:
-  pointer = (left + right) / 2 
-                
-if pointer &gt; target:
-  right limit = pointer
-              
-else if pointer &lt; target: 
-  left limit = pointer
-              
-else if pointer == target:
-  return pointer
-              
-return not found              
-          </pre></div>
-          <div id ="find_linear_code" style="display: none;"><pre>
-Linear Search
-for element in array:
-if element == target:
-  return target
-else:
-  continue            
-          </pre></div>
-          <div id ="find_max_code" style="display: none;"><pre>
-Find Maximum
-max_value = first element of array
-for next_element in array
-if max_value &lt; next_element
-  max_value = next_element
-return max_value
-          </pre></div>
-          <div id ="find_min_code" style="display: none;"><pre>
-Find Minimum
-min_value = first element of array
-for next_element in array
-if min_value &gt; next_element
-  min_value = next_element
-return min_value
-          </pre></div>
-          <div id ="insert_code" style="display: none;"><pre>
-Insert
-find index
-shift stored data right
-insert number
-build new data structure            
-          </pre></div>  
-          <div id ="delete_code" style="display: none;"><pre>
-Delete
-search for elem
-remove elem
-shift divs             
-          </pre></div>
+ <!-- 1,2,3,2,-1,0,20,3,90,6-->
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Pedagogical Simulation of Basic Data Structures</title>
+      <link rel="stylesheet" href="style.css"> 
+    </head>
+    <body>
+    <h1>Visualisation for Data Strucutres</h1>
+    <div class="container">
+      <div class="top">
+        <div class="ds">
           
-        </div>
-      <div id="data_parent2" class="data_parent_class2"></div> <!-- right compare DS-->         
-      </div> <!-- bottom div-->
-    </div> <!--container div>-->
-    
-    <script src="main_data_1.js"></script> <!-- change file name here -->
+          <div class="data_class_div">
+            <h2>Select a Data Structure</h2>
+            <p></p>
+            <select name="Data" id="data" required>
+              <option value ="sorted_array">Sorted Array</option>
+              <option value ="linked_list">Linked List</option>
+              <option value ="hash_table">Hash Table</option>
+            </select>
+            <input name="input_list" id="input_list" required placeholder="comma-sperated numbers">
+            <button id="show" onclick=start_data()>Show</button>
+            <button id="restart_ds" style="display:none" onclick=restart_all()>Restart DS</button>
+          </div> <!--data_class_div-->
 
-  </body>
-</html>
+          <div id="operation_div" class="operation_class_div" style="display:none;" >
+            <h2>Operations</h2>
+            <p></p>
+            <select name="build_button" id="build_button" required>
+                <option value ="build">build</option>
+              </select>
+                <p></p>
+            <div id="operation_indiv_div0">
+              <select name="ops" id="ops" required>
+                <option value ="find">find</option>
+                <option value ="insert">insert</option>
+                <option value ="delete">delete</option>
+                <option value ="find_min">find min</option>
+                </select>
+                <input type="number" id = "ops_input" required placeholder="target number"> <!--ops input value-->
+                <p></p>
+            </div>
+          
+            <div id="add_operation" style="display:block;">
+            </div> <!--add operation-->
+
+            <div id="operation_button">
+              <button id="add_operation_button" onclick=add_operation()>Add Operation</button>
+              <button id="next_button" style="display:none" onclick=next_step(ds)>Next Step</button>
+              <button id="previous_button" style="display:none" onclick=previous_step(ds)>Previous</button>
+              <button id="simulate_ops_button" onclick=start_operation(ds)>Simulate</button>
+              <button id="restart_ops_button" style="display:none" onclick=restart_operation();start_data();>Restart</button>   
+              <p></p>
+              <h4 id="target_value" style="display:none">Target value: </h4>
+              <div id="target_num" style="display:inline-block"></div>
+              <h4 id="ani_value" style="display:none">Animation stage: </h4>
+              <div id="ani_number" style="display:inline-block"></div>
+              
+            </div> <!-- operation button-->
+          </div> <!-- operation div-->
+          </div> <!-- ds div-->
+            <div id="data_parent" class="data_parent_class"></div> <!-- top left compare DS-->
+        </div> <!-- top div-->
+        
+        <div class="bottom">
+          <div id ="explain_div" class="explain_div">
+            <h2>Pseudocode</h2>
+            <div id ="build_code" style="display: none;"><pre>Build data structure</pre></div>
+            <div id ="find_binary_code" style="display: none;">Binary Search<pre>            
+  set left limit
+  set right limit
+                
+  while left limit &lt; right limit:
+    pointer = (left + right) / 2 
+                  
+  if pointer &gt; target:
+    right limit = pointer
+                
+  else if pointer &lt; target: 
+    left limit = pointer
+                
+  else if pointer == target:
+    return pointer
+                
+  return not found              
+            </pre>Time complexity: O(log n)</div>
+            <div id ="find_linear_code" style="display: none;">Linear Search<pre>
+  for element in array
+  1.  if element = target
+  2.    return target
+  3.  else:
+        continue            
+            </pre>Time complexity: O(n)</div>
+
+            <div id ="find_min_code" style="display: none;">Find Minimum<pre>
+  1.  minimum value = first element of array
+      for next element in array
+  2.    if minimum value &gt; next element
+  3.      minimum value = next element
+  4.    return minimum value
+            </pre>Time complexity: O(1)</div>
+            <div id ="insert_code" style="display: none;">Insert<pre>
+  1.  insert number at the start
+  2.  rebuild data structure            
+            </pre>Time complexity: O(n)</div>  
+            <div id ="delete_code" style="display: none;">Delete<pre>
+  1.  search for element
+  2.  remove element
+  3.  shift divs to left
+            </pre>Time complexity: O(n)</div>
+            
+          </div>
+        <div id="data_parent2" class="data_parent_class2"></div> <!-- right compare DS-->         
+        </div> <!-- bottom div-->
+      </div> <!--containter div>--> 
+      <script src="main_data_1.js"></script> <!-- change file name here -->
+
+    </body>
+  </html>
