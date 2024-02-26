@@ -45,7 +45,29 @@ body, html {
     height: 50px;
     margin: 5px;
     outline: 3px solid black;
-    border: 10px solid transparent;
-    
+    border: 10px solid transparent;   
 }
 
+.arrow {
+    top: 100%;
+    left: 100%;
+    width: 0;
+    height: 0;
+    transform: translate(200%, 0%);
+    transform-origin: center;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid black;
+}
+
+h2{
+    font-size: 20px;
+    background-color: black;
+    padding: 5px 5px;
+    color: white
+}
+
+h1{
+    font-size: 24px;
+    text-align: center;
+}
