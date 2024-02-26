@@ -259,8 +259,12 @@ const previous_step = (ds) => {
 
 
 // ****** METHODS/FUNCTIONS ****** //
-const build_ds_sorted_arr = (ds) => {
-    ds.ani_list.push([structuredClone(ds.L),NaN,NaN,NaN,ds.current_ops]); // unordered list
+const build_ds_sorted_arr = (ds) => { 
+    for (let i=0; i<ds.L.length;i++){ // Unsorted array
+        current_list = ds.L.slice(0,i);
+        ds.ani_list.push([current_list,NaN,NaN,NaN,ds.current_ops]);
+    }
+    ds.ani_list.push([structuredClone(ds.L),NaN,NaN,NaN,ds.current_ops]);
     ds.L = ds.L.sort(function(a,b){return a-b;}); 
     ds.ani_list.push([structuredClone(ds.L),NaN,NaN,NaN,ds.current_ops]); // ordered list
 }
@@ -272,6 +276,7 @@ const build_ds_linked_list = (ds) => {
         current_list = ds.L.slice(0,i);
         ds.ani_list.push([current_list,NaN,NaN,NaN,ds.current_ops]);
     }
+    ds.ani_list.push([structuredClone(ds.L),NaN,NaN,NaN,ds.current_ops]);
 }
 
 const build_ds_hash_table = (ds) => {
