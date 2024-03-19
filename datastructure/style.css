@@ -166,3 +166,20 @@ h1{
     font-size: 24px;
     text-align: center;
 }
+
+h3{
+    margin-left: 20px;
+    font-weight: normal;
+}
+
+
+.sub_point > li{
+    padding-left: 0px;
+    margin-bottom: 5px;
+    color: black;
+}
+.main_point > li{
+    padding-left: 0px;
+    margin-bottom: 15px;
+    color: red;
+}
