@@ -10,13 +10,14 @@
     <h1>Visualisation for Data Structures</h1>
     <h3>Here is a guide on how to use the simulation</h3>
     <ol>
-      <li>Select a data structure to simulate. There are 3 options: sorted array, linked list, hash tables. </li>
+      <li>Select a data structure to simulate. There are 3 options: sorted array, linked list, and hash tables. </li>
       <li>Input a list of ONLY numbers and click on show.</li>
-      <li>Select the operation to simulate. There are 3 types of operations: find, insert, delete. Build method is fixed so it cannot be changed.</li>
+      <li>Select the operation to simulate. There are 3 types of operations: find, insert, delete. The build method is fixed so it cannot be changed.</li>
       <li>Add additional operations if required.</li>
       <li>Click on simulate to start the simulation.</li>
-      <li>Click on next steps to observe the simulation!</li>
+      <li>Click on the next steps to observe the simulation!</li>
       <li>Click on this <a href="https://evanchuamg.github.io/datastructure/about.html" target="_blank">link</a> for clearer explanation on the various data structures </li>
+      <li>Kindly leave any comments or feedback in this <a href="https://docs.google.com/forms/d/e/1FAIpQLSfbwW3J6QEjh21xjCnPh0rpKJ6LQhCn7w5bSjYQIlm_nG4QWw/viewform" target="_blank">link</a></li>
     </ol>
     <div class="container">
       <div class="top">
@@ -30,7 +31,7 @@
               <option value ="linked_list">Linked List</option>
               <option value ="hash_table">Hash Table</option>
             </select>
-            <input name="input_list" id="input_list" required placeholder="comma-sperated numbers" value="2,1,2,3,4,5">
+            <input name="input_list" id="input_list" required placeholder="comma-separated numbers" value="2,1,2,3,4,5">
             <input name="hash_num" id="hash_num" class="hash_input" type="number" min="1" max="31" step="1" value="2" style="display: none;" placeholder="Hash">
             <input name="mod_num" id="mod_num" class="mod_input" type="number" min="1" max="31" step="1" value="3" style="display: none;" placeholder="MOD">
             
@@ -106,19 +107,19 @@
             </pre>Time complexity: O(n)</div>
             <div id ="find_min_code" style="display: none;">Find Minimum<pre>
   1.  minimum value = first element of array
-      for next element in array
+      for the next element in the array
   2.    if minimum value &gt; next element
   3.      minimum value = next element
   4.    return minimum value
             </pre>Time complexity: O(1)</div>
             <div id ="insert_code" style="display: none;">Insert<pre>
-  1.  insert number at the start
+  1.  insert a number at the start
   2.  rebuild data structure            
             </pre>Time complexity: O(n)</div>  
             <div id ="delete_code" style="display: none;">Delete<pre>
   1.  search for element
   2.  remove element
-  3.  shift divs to left
+  3.  shift divs to the left
             </pre>Time complexity: O(n)</div>
             
           </div> <!-- code div -->
@@ -126,7 +127,7 @@
           <div id="hash_equation" class="hash_equation" style="display: none;"></div>
         </div> <!-- explain div-->         
         </div> <!-- bottom div-->
-      </div> <!--containter div>--> 
+      </div> <!--container div>--> 
       <script src="main_data_1.js"></script> <!-- change file name here -->
 
     </body>
