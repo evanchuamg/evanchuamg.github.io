@@ -8,6 +8,16 @@
     </head>
     <body>
     <h1>Visualisation for Data Structures</h1>
+    <h3>Here is a guide on how to use the simulation</h3>
+    <ol>
+      <li>Select a data structure to simulate. There are 3 options: sorted array, linked list, hash tables. </li>
+      <li>Input a list of ONLY numbers and click on show.</li>
+      <li>Select the operation to simulate. There are 3 types of operations: find, insert, delete. Build method is fixed so it cannot be changed.</li>
+      <li>Add additional operations if required.</li>
+      <li>Click on simulate to start the simulation.</li>
+      <li>Click on next steps to observe the simulation!</li>
+      <li>Click on this <a href="https://evanchuamg.github.io/datastructure/about.html" target="_blank">link</a> for clearer explanation on the various data structures </li>
+    </ol>
     <div class="container">
       <div class="top">
         <div class="ds">
@@ -20,9 +30,9 @@
               <option value ="linked_list">Linked List</option>
               <option value ="hash_table">Hash Table</option>
             </select>
-            <input name="input_list" id="input_list" required placeholder="comma-sperated numbers">
-            <input name="hash_num" id="hash_num" class="hash_input" type="number" min="1" max="31" step="1" value="" style="display: none;" placeholder="Hash">
-            <input name="mod_num" id="mod_num" class="mod_input" type="number" min="1" max="31" step="1" value="" style="display: none;" placeholder="MOD">
+            <input name="input_list" id="input_list" required placeholder="comma-sperated numbers" value="2,1,2,3,4,5">
+            <input name="hash_num" id="hash_num" class="hash_input" type="number" min="1" max="31" step="1" value="2" style="display: none;" placeholder="Hash">
+            <input name="mod_num" id="mod_num" class="mod_input" type="number" min="1" max="31" step="1" value="3" style="display: none;" placeholder="MOD">
             
             <button id="show" onclick=start_data()>Show</button>
             <button id="restart_ds" style="display:none" onclick=restart_all()>Restart DS</button>
@@ -41,7 +51,7 @@
                 <option value ="insert">insert</option>
                 <option value ="delete">delete</option>
                 </select>
-                <input type="number" id = "ops_input" required placeholder="target number"> <!--ops input value-->
+                <input type="number" id = "ops_input" required placeholder="target number" value="1"> <!--ops input value-->
                 <p></p>
             </div>
           
@@ -114,7 +124,6 @@
           </div> <!-- code div -->
         <div id="explain_div" class="explain_class">
           <div id="hash_equation" class="hash_equation" style="display: none;"></div>
-          <div id=""
         </div> <!-- explain div-->         
         </div> <!-- bottom div-->
       </div> <!--containter div>--> 
