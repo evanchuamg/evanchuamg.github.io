@@ -29,6 +29,22 @@ document.getElementById("data").addEventListener("change", mod_num_show);
 
 // ****** SHOW HASH TABLE MODULOUS INPUT ****** //
 
+// ****** CHECK FOR WRONG INPUTS IN LIST ****** //
+const wrong_input = () => {
+    let list = document.getElementById("input_list").value;
+    const list_delimiter = list.split(",").map(s => Number(s));
+    for (i=0;i<list_delimiter.length;i++){
+        console.log(list_delimiter[i], typeof(Number('a')))
+        if (isNaN(list_delimiter[i])){
+            window.alert("Please only input values into the list.")
+            return true
+        }
+    }
+}
+document.getElementById("input_list").addEventListener("change", wrong_input);
+
+// ****** CHECK FOR WRONG INPUTS IN LIST ****** //
+
 
 // ****** RESTARTING ENTIRE PAGE ****** //
 const restart_all = () => {
@@ -184,19 +200,23 @@ const add_operation = () => {
 }
 // ****** ADD OPERATIONS ****** //
 
-
+ 
 
 // ****** STARTING SIMULATION ****** //
 const start_data = () => {
     let list = document.getElementById("input_list").value;
     const list_delimiter = list.split(",").map(s => Number(s));
-    ds = new sorted_array(list_delimiter);
+
+    // error checking 
+    if (wrong_input()){return;}
     if (document.getElementById("data").value == "hash_table"){
         if(document.getElementById("mod_num").value==0 || document.getElementById("hash_num").value==0){
             window.alert("Modular and Hash number cannot be 0.")
             return;
         }
     }
+
+    ds = new sorted_array(list_delimiter);
     document.getElementById("operation_div").style.display = "block";
     document.getElementById("show").style.display = "none";
     document.getElementById("restart_ds").style.display = "inline-block";
@@ -249,7 +269,6 @@ const execute_operation = (i) => {
     if (ops === "find" && ds.data_structure === "sorted_array"){find_x_binary(ds,input);} 
     else if (ops === "find" && ds.data_structure === "linked_list"){find_x_linear(ds,input);}
     else if (ops === "find" && ds.data_structure === "hash_table"){find_x_linear(ds,input);}
-    else if (ops === "find_min"){find_min(ds,input);}
     else if (ops === "delete"){delete_x(ds,input);}
     else if (ops === "insert"){insert_x(ds,input);} // remove insert idx
     
@@ -267,37 +286,53 @@ const hide_code = () => {
 const hash_equation = (x,hash,mod,operation) => {
     // create indiv divs for 4 numbers
     // change CSS
+
+
     answer = x*hash%mod;
     let ops = document.createElement("span");
     document.getElementById("hash_equation").appendChild(ops);
     ops.id = operation+"_hash_equation";
-    ops.textContent = operation + ": ";
+    ops.textContent = "Current operation: "+ operation;
     ops.style.color = "black";
     ops.style.backgroundColor = "lightgreen";
+
+    let hash_elem = document.createElement("span");
+    document.getElementById("hash_equation").appendChild(hash_elem);
+    hash_elem.id = hash+"_hash_equation_number";
+    hash_elem.textContent = "Hash function: " + hash ;
+    hash_elem.style.color = "blue";
+    hash_elem.style.display = "block";
+
+    let mod_elem = document.createElement("span");
+    document.getElementById("hash_equation").appendChild(mod_elem);
+    mod_elem.id = mod+"_hash_equation_number";
+    mod_elem.textContent = "Modular number: " + mod;
+    mod_elem.style.color = "green";
+    mod_elem.style.display = "block";
 
     let span_x = document.createElement("span");
     document.getElementById("hash_equation").appendChild(span_x);
     span_x.id = x+"_hash_equation";
     if (typeof(x) == "undefined"){span_x.textContent = 'Item not found'; return;}
-    span_x.textContent = "(|" + x + "| * ";
+    span_x.textContent = "(|" + x + "|";
     span_x.style.color = "black";
 
     let span_hash = document.createElement("span");
     document.getElementById("hash_equation").appendChild(span_hash);
     span_hash.id = hash+"_hash_equation";
-    span_hash.textContent = hash+") %";
+    span_hash.textContent = "*" + hash+")";
     span_hash.style.color = "blue";
 
     let span_mod = document.createElement("span"); 
     document.getElementById("hash_equation").appendChild(span_mod);
     span_mod.id = mod+"_hash_equation";
-    span_mod.textContent = mod+ "=";
+    span_mod.textContent = "%" + mod;
     span_mod.style.color = "green";
 
     let span_answer = document.createElement("span");
     document.getElementById("hash_equation").appendChild(span_answer);
     span_answer.id = answer+"_hash_equation";
-    span_answer.textContent = Math.abs(answer);
+    span_answer.textContent = "=" + Math.abs(answer);
     span_answer.style.color = "red";
 }
 // ****** STARTING SIMULATION ****** //
@@ -535,17 +570,6 @@ const find_x_binary = (ds,x) =>{
     console.log(ds.ani_list)
 }
 
-const find_min = (ds) => {
-    let min = ds.L[0];
-    if (ds.data_structure ==="sorted_array"){
-        ds.ani_list.push([structuredClone(ds.L),0,min,NaN,ds.current_ops,"find",[]]);
-    }
-    for (i=0;i<ds.L.length;i++){
-        if (ds.L[i] < min){
-            min = ds.L[i];
-        }
-    }
-}
 
 const delete_x = (ds,x) => { // find elem, then delete
     const input = Number(x)
