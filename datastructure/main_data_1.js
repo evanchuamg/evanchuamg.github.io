@@ -57,7 +57,7 @@ const restart_all = () => {
     // document.getElementById("restart_ops_button").style.display = "none";
     // to delete, part of restart_opetation function
     
-    input_list.value=""
+    // input_list.value=""
     document.getElementById("operation_div").style.display = "none";
     document.getElementById("show").style.display = "inline-block";
     document.getElementById("restart_ds").style.display = "none";
@@ -216,7 +216,7 @@ const start_data = () => {
         }
     }
 
-    ds = new sorted_array(list_delimiter);
+    ds = new data(list_delimiter);
     document.getElementById("operation_div").style.display = "block";
     document.getElementById("show").style.display = "none";
     document.getElementById("restart_ds").style.display = "inline-block";
@@ -643,7 +643,7 @@ const insert_x = (ds,x) => {
 
 
 // ****** DATA STRUCTURES ****** //
-function sorted_array(L) {
+function data(L) {
     this.L = L;
     this.data_structure = "";
     this.ani_list = []; // [list, pointer, target, special,current_ops, value_list]
